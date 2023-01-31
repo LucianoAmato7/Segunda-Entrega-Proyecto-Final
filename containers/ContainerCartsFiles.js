@@ -49,11 +49,9 @@ class ContainerCartsFile {
     let exists = cartS.some((p) => p.id == id);
 
     if (exists) {
-      let item = cartS.find((p) => p.id == id);
-      let indice = cartS.indexOf(item);
-      cartS.splice(indice, 1);
+      let update = cartS.filter((p) => p.id != id);
       try {
-        await fs.writeFile(this.route, JSON.stringify(cartS, null, "\t"));
+        await fs.writeFile(this.route, JSON.stringify(update, null, "\t"));
         console.log(`el carrito con el id: ${id}, ha sido eliminado`);
         return cartS;
       } catch (error) {
@@ -106,24 +104,14 @@ class ContainerCartsFile {
   async DeleteProd(idCart, idProd) {
     const cartS = await this.ListCarts();
 
-    let prod = await productsDaoFile.ProdById(idProd)
-    .then((prod) => {
-      return prod;
-    });
-
     let cartById = cartS.find((c) => c.id == idCart);
 
     if (cartById) {
       if (cartById.products.length > 0) {
         let exist = cartById.products.some((p) => p.id == idProd);
-
         if (exist) {
-          let indexOfProd = cartById.products.indexOf(prod);
-
-          let indexOfCart = cartS.indexOf(cartById);
-
-          cartS[indexOfCart].products.splice(indexOfProd, 1);
-
+          let update = cartById.products.filter((p) => p.id != idProd);
+          cartById.products = update;
           try {
             await fs.writeFile(this.route, JSON.stringify(cartS, null, "\t"));
             console.log(

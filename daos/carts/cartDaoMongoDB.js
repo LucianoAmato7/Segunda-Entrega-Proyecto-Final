@@ -1,4 +1,5 @@
 import ContainerMongoDB from "../../containers/ContainerMongoDB.js";
+import {URLMongoDB} from "../../config.js"
 import mongoose from "mongoose";
 
 mongoose.set("strictQuery", false);
@@ -16,7 +17,7 @@ class CartsDaoMongoDB extends ContainerMongoDB {
   constructor() {
     super(
       model,
-      "mongodb+srv://coderhouse:coderhouse@coderhouse-backend.iwu4lzw.mongodb.net/ecommerce?retryWrites=true&w=majority"
+      URLMongoDB
     );
   }
 }

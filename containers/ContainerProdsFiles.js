@@ -79,16 +79,11 @@ class ContainerProdsFile {
     let exists = prodS.some((p) => p.id == id);
 
     if (exists) {
-      let item = prodS.find((p) => p.id == id);
-
-      let indice = prodS.indexOf(item);
-
-      prodS.splice(indice, 1);
-
+      let update = prodS.filter(p => p.id != id);
       try {
-        await fs.writeFile(this.route, JSON.stringify(prodS, null, "\t"));
+        await fs.writeFile(this.route, JSON.stringify(update, null, "\t"));
         console.log(`el producto con el id: ${id}, ha sido eliminado`);
-        return prodS
+        return update
       } catch (err) {
         console.log(`Se ha producido un error: ${err}`);
       }

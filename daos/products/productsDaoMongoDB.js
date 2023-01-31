@@ -1,33 +1,35 @@
 import ContainerMongoDB from "../../containers/ContainerMongoDB.js";
+import { URLMongoDB } from "../../config.js";
 import mongoose from "mongoose";
 
 mongoose.set("strictQuery", false);
 
-const prodSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    unique: true,
+const prodSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      unique: true,
+    },
+    price: String,
+    thumbnail: String,
+    timestamp: String,
+    code: {
+      type: String,
+      unique: true,
+    },
+    stock: String,
+    brand: String
   },
-  price: String,
-  thumbnail: String,
-  timestamp: String,
-  code: {
-    type: String,
-    unique: true,
-  },
-  stock: String
-}, {
-  versionKey: false
-});
+  {
+    versionKey: false,
+  }
+);
 
 const model = mongoose.model("products", prodSchema);
 
 class ProductsDaoMongoDB extends ContainerMongoDB {
   constructor() {
-    super(
-      model,
-      "mongodb+srv://coderhouse:coderhouse@coderhouse-backend.iwu4lzw.mongodb.net/ecommerce?retryWrites=true&w=majority"
-    );
+    super(model, URLMongoDB);
   }
 }
 

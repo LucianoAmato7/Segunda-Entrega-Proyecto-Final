@@ -6,6 +6,9 @@ import { productsDaoFile } from "./daos/index.js";
 import { productsDaoMongoDB } from "./daos/index.js";
 import { cartDaoMongoDB } from "./daos/index.js";
 
+import {cartDaoFirebase} from './daos/index.js'
+import {productsDaoFirebase} from './daos/index.js'
+
 const app = express();
 
 const router = express.Router();
@@ -37,6 +40,8 @@ router.get("/products", (req, res) => {
     // .then((data)=>{res.json(data)})
 
     //----TRABAJA CON FIREBASE-----
+    // productsDaoFirebase.ListAll()
+    // .then((data)=>{res.json(data)})
 
   } else {
     res.json({
@@ -64,6 +69,8 @@ router.get("/products/:id", (req, res) => {
     // })
 
     //----TRABAJA CON FIREBASE-----
+    // productsDaoFirebase.ListById(id)
+    // .then((data)=>{res.json(data)})
 
   } else {
     res.json({
@@ -89,7 +96,8 @@ router.post("/products", (req, res) => {
     // .then((prod)=>{res.json(prod)})
       
     //----TRABAJA CON FIREBASE-----
-
+    // productsDaoFirebase.CreateProd(newProd)
+    // .then((data)=>{res.json(data)})
 
   } else {
     res.json({
@@ -116,7 +124,8 @@ router.put("/products/:id", (req, res) => {
     // .then((prods)=>{res.json(prods)})
 
     //----TRABAJA CON FIREBASE-----
-
+    // productsDaoFirebase.UpdateProd(id, prod)
+    // .then((data)=>{res.json(data)})
 
   } else {
     res.json({
@@ -142,7 +151,8 @@ router.delete("/products/:id", (req, res) => {
     // .then((data)=>{res.json(data)})
 
     //----TRABAJA CON FIREBASE-----
-
+    // productsDaoFirebase.Delete(id)
+    // .then((data)=>{res.json(data)})
 
   } else {
     res.json({
@@ -169,7 +179,8 @@ router.post("/cart", (req, res) => {
   // .then((data)=>{res.json(data)})
 
   //----TRABAJA CON FIREBASE-----
-
+  // cartDaoFirebase.CreateCart()
+  // .then((data)=>{res.json(data)})
 });
 
 //Vacía un carrito y lo elimina.
@@ -187,7 +198,8 @@ router.delete("/cart/:id", (req, res) => {
   // .then((data)=>{res.json(data)})
 
   //----TRABAJA CON FIREBASE-----
-
+  // cartDaoFirebase.Delete(id)
+  // .then((data)=>{res.json(data)})
 });
 
 //Me permite listar todos los productos que tiene el carrito con dicho id.
@@ -205,6 +217,8 @@ router.get("/cart/:idCart/products", (req, res) => {
   // .then((prods)=>{res.json(prods)})
 
   //----TRABAJA CON FIREBASE-----
+  // cartDaoFirebase.GetProds(idCart)
+  // .then((data)=>{res.json(data)})
 
 });
 
@@ -224,6 +238,8 @@ router.post("/cart/:idCart/products/:idProd", (req, res) => {
   // .then((data)=>{res.json(data)})
 
   //----TRABAJA CON FIREBASE-----
+  // cartDaoFirebase.addProdToCart(idCart, idProd)
+  // .then((data)=>{res.json(data)})
 
 });
 
@@ -243,6 +259,8 @@ router.delete("/cart/:idCart/products/:idProd", (req, res) => {
   // .then((data)=>{res.json(data)})
 
   //----TRABAJA CON FIREBASE-----
+  // cartDaoFirebase.DeleteProd(idCart, idProd)
+  // .then((data)=>{res.json(data)})
 
 });
 

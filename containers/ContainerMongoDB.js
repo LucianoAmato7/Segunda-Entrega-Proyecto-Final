@@ -31,7 +31,7 @@ class ContainerMongoDB {
   }
 
 
-  //PRODUCTS - Recibe title, price y thumbnail.
+  //PRODUCTS - crea un producto. Recibe title, price y thumbnail.
   async CreateProd(data) {
     try {
       await mongoose.connect(this.route, {
@@ -130,6 +130,7 @@ class ContainerMongoDB {
       }
     } catch {
       console.log(`Error en operacion de base de datos: ${error}`);
+      return {error: 'Error al listar los productos'}
     } finally {
       mongoose.disconnect().catch((err) => {
         throw new Error("error al desconectar la base de datos");
@@ -165,7 +166,6 @@ class ContainerMongoDB {
   }
 
   //PRODUCTS - recibe y actualiza un producto según su id.
-  //Teniendo en cuenta que solo se podra modificar el title, price o stock
   async UpdateProd(id, obj) {
     try {
       await mongoose.connect(this.route, {
@@ -190,17 +190,16 @@ class ContainerMongoDB {
 
   //CART - elimina un producto de un carrito
   async DeleteProd(idCart, idProd){
-    const prod = await productsDaoMongoDB.ListById(idProd)
     try {
       await mongoose.connect(this.route, {
         serverSelectionTimeoutMS: 5000,
       });
+      console.log('conexion de mongoDB');
       try{
         const cart = await this.model.findById(idCart)
         const prodsArray = cart.products
-        const indexOfProd = prodsArray.indexOf(prod)
-        prodsArray.splice(indexOfProd, 1)
-        await this.model.updateOne({_id: idCart}, {products: prodsArray})
+        const update = prodsArray.filter(p => p._id != idProd)
+        await this.model.updateOne({_id: idCart}, {products: update})
         console.log('Producto eliminado con exito');
         return await this.model.findById(idCart)
       }catch(err){
