@@ -174,6 +174,7 @@ class ContainerMongoDB {
       try {
         await this.model.updateOne({ _id: id }, obj);
         const prods = await this.model.find({});
+        console.log('Producto actualizado');
         return prods;
       } catch (err) {
         console.log(err);

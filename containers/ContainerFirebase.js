@@ -120,13 +120,23 @@ class ContainerFirebase {
   //PRODUCTS - actualiza item por id.
   async UpdateProd(id, obj) {
     const dbColl = db.collection(this.collection);
-    try {
-      await dbColl.doc(id).set(obj);
-      return this.ListById(id);
-    } catch (err) {
-      console.log(err);
-      return { error: "Error en la actualización del producto" };
-    }
+    const data = [];
+    const objs = await dbColl.get();
+    objs.forEach((doc) => {
+      data.push(asObj(doc));
+    });
+    const exist = data.some(p => p.id == id)
+    if(exist){
+      try {
+          await dbColl.doc(id).set(obj);
+          return this.ListById(id);
+        } catch (err) {
+          console.log(err);
+          return { error: "Error en la actualización del producto" };
+        }
+    }else{
+      return { error: "No se ha encontrado ningun producto con ese ID" }
+    }  
   }
 
   //CART - elimina un producto de un carrito
